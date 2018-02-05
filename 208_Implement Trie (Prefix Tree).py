@@ -1,10 +1,14 @@
+class TrieNode(object):
+    def __init__(self):
+        self.isWord = False
+        self.children = {}
+
 class Trie(object):
     def __init__(self):
         """
         Initialize your data structure here.
         """
-        self.tree = {}
-
+        self.root = TrieNode()
 
     def insert(self, word):
         """
@@ -12,14 +16,12 @@ class Trie(object):
         :type word: str
         :rtype: void
         """
-        if len(word) > 0:
-            if word[0] in self.tree:
-                self.tree[word[0]].insert(word[1:None])
-            else:
-                self.tree[word[0]] = Trie()
-                if len(word) > 1:
-                    self.tree[word[0]].insert(word[1:None])
-
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                node.children[c] = TrieNode()
+            node = node.children[c]
+        node.isWord = True
 
     def search(self, word):
         """
@@ -27,13 +29,15 @@ class Trie(object):
         :type word: str
         :rtype: bool
         """
-        if word[0] in self.tree:
-            if len(word) == 1:
-                return True
+        node = self.root
+        for c in word:
+            if c not in node.children:
+                return False
             else:
-                return self.tree[word[0]].search(word[1:None])
-        else:
-            return False
+                node = node.children[c]
+        return node.isWord
+
+
 
     def startsWith(self, prefix):
         """
@@ -41,13 +45,13 @@ class Trie(object):
         :type prefix: str
         :rtype: bool
         """
-        if prefix[0] in self.tree:
-            if len(prefix) == 1:
-                return True
+        node = self.root
+        for c in prefix:
+            if c not in node.children:
+                return False
             else:
-                return self.tree[prefix[0]].startsWith(prefix[1:None])
-        else:
-            return False
+                node = node.children[c]
+        return True
 
 
 
