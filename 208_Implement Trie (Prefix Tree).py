@@ -37,8 +37,6 @@ class Trie(object):
                 node = node.children[c]
         return node.isWord
 
-
-
     def startsWith(self, prefix):
         """
         Returns if there is any word in the trie that starts with the given prefix.
